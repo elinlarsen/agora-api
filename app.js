@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("./config/dbconfig");
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
