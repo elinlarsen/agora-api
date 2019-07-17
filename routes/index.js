@@ -66,8 +66,16 @@ router.get(getCollectionEndpoints, (req, res, next) => {
 });
 
 router.get(getOneByIdEndpoints, (req, res, next) => {
+  let queryExpand = Object.assign({}, req.query);
+  let queryObject = Object.assign({}, req.query);
+  delete queryObject.expand;
+  console.log("Query Object is ");
+  console.log(queryObject);
+  console.log("Fields to expand are:  ");
+  console.log(queryExpand.expand);
+
   let model = extractModelFromUrlRequest(req);
-  model.getOneById(req.params.id, dbRes => res.send(dbRes));
+  model.getOneById(req.params.id, queryExpand.expand, dbRes => res.send(dbRes));
 });
 
 /* POST routes */

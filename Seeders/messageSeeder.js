@@ -5,9 +5,9 @@ let messageHandler = new dbHandler(messageModel);
 
 let data = {
   post_date: Date("07/14/2020"),
-  user: "5d2b484933e4882ce41a993b",
+  user: "5d2b484933e4882ce41a993c",
   project: "5d2b4ce0b52a77443c301c1a",
-  text: "Dear Friends, I would like to make an inportant contribution",
+  text: "Another great contribution from a very valuable member",
   likes: ["5d2b484933e4882ce41a993c", "5d2b484933e4882ce41a993d"],
   comments: [
     {

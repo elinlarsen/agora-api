@@ -52,9 +52,10 @@ class dbHandler {
       .catch(err => console.log(err));
   }
 
-  getOneById(id, clbk) {
+  getOneById(id, populateArray, clbk) {
     this.model
       .findById(id)
+      .populate(populateArray)
       .then(dbRes => {
         console.log(
           "Extracting a single document seems to be working. Result is  " +
