@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const parser=require("../config/cloudinary")
+
 const models = [
   { name: "users", model: require("../models/User.js") },
   { name: "agoras", model: require("../models/Agora.js") },
@@ -70,9 +72,24 @@ router.get(getOneByIdEndpoints, (req, res, next) => {
 
 /* POST routes */
 
-router.post(createEndpoints, (req, res, next) => {
+router.post(createEndpoints,  parser.single('picture'),(req, res, next) => {
+  var objectToPass=req.body
+
+  const arr = JSON.parse(req.body.projects)
+
+  if(req.body.projects) {
+    const projects = JSON.parse(req.body.projects)
+    objectToPass.projects= projects
+  }
+  if(req.body.members) {
+    const members = JSON.parse(req.body.members)
+    objectToPass.members= members
+    }
+  
+  if(req.file){objectToPass.picture=[req.file.secure_url]}
+ 
   let model = extractModelFromUrlRequest(req);
-  model.createOne(req.body, dbRes => res.send(dbRes));
+  model.createOne(objectToPass, dbRes => res.send(dbRes));
 });
 
 /* PATCH routes */

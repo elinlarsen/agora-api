@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
-  name: { type: String, require: true, unique: true },
+  name: { type: String, required: true, unique: true },
   picture: { type: String },
   members: [{ type: Schema.Types.ObjectId, ref: "userModel" }],
   tags: [

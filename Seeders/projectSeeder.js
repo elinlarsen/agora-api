@@ -5,6 +5,7 @@ const projectModel = require("../models/Project.js");
 let projectHandler = new dbHandler(projectModel);
 
 let data = {
+  _id : "5d2b4ce0b52a77443c301c1a",
   name: "A project to make the world great again",
   picture: "../betterWorld.jpg",
   members: ["5d2b1bd1f6ee38466cccbbe7", "5d2b1bd1f6ee38466cccbbe8"],
@@ -20,6 +21,43 @@ let data = {
   public: true
   // messages:
 };
+
+let data2 = {
+  _id : "5d2b4ce0b52a77443c301c1b",
+  name: "Project 2 ",
+  picture: "../betterWorld.jpg",
+  members: ["5d2b1bd1f6ee38466cccbbe7", "5d2b1bd1f6ee38466cccbbe8"],
+  tags: ["culture", "environment", "security"],
+  type: "open",
+  minimum_contribution: 100,
+  minimum_total_amount: 500,
+  minimum_amount_per_member: 100,
+  start_date: new Date("01/01/2020"),
+  end_date: new Date("01/01/2021"),
+  description: "A wonderful project to make the world great again",
+  status: "ideation",
+  public: true
+  // messages:
+};
+
+let data3= {
+  _id: "5d2b4ce0b52a77443c301c1c", 
+  name: "Project 3 ",
+  picture: "../betterWorld.jpg",
+  members: ["5d2b1bd1f6ee38466cccbbe7", "5d2b1bd1f6ee38466cccbbe8"],
+  tags: ["culture", "environment", "security"],
+  type: "open",
+  minimum_contribution: 100,
+  minimum_total_amount: 500,
+  minimum_amount_per_member: 100,
+  start_date: new Date("01/01/2020"),
+  end_date: new Date("01/01/2021"),
+  description: "A wonderful project to make the world great again",
+  status: "ideation",
+  public: true
+}
+
+
 
 let seeds = [];
 
