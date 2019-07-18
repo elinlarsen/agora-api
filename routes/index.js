@@ -32,8 +32,8 @@ router.get("/", (req, res, next) => {
     getCollectionEndpoints,
     getOneByIdEndpoints,
     createEndpoints,
-    updateEndpoints,
-    deleteEndpoints
+    //updateEndpoints,
+    //deleteEndpoints
   ];
 
   ImportantNotesText1 =
@@ -42,10 +42,13 @@ router.get("/", (req, res, next) => {
   ImportantNotesText2 =
     'You can also choose to populate specific fields in a collection using /?expand = fields to populate (with expand repeated as many time as you need). For example, if you would like to populate the fields "likes" and "project" for the messages collection, just query /messages/?expand = likes & expand = project';
 
+  ImportantNotesText3 =
+  ' Editing and deleting specific documents can be done through endpoints with ID'
+
   data = {
     introduction: introductionText,
     endpoints: endpoints,
-    importantNotes: [ImportantNotesText1, ImportantNotesText2]
+    importantNotes: [ImportantNotesText1, ImportantNotesText2, ImportantNotesText3]
   };
   res.send(data);
 });
@@ -102,16 +105,17 @@ router.post(createEndpoints,  parser.single('picture'),(req, res, next) => {
 
 /* PATCH routes */
 
-router.patch(updateEndpoints, (req, res, next) => {
+router.patch(getOneByIdEndpoints, (req, res, next) => {
   let model = extractModelFromUrlRequest(req);
   model.updateOne({ _id: req.params.id }, req.body, dbRes => res.send(dbRes));
 });
 
 /* DELETE routes */
 
-router.delete(deleteEndpoints, (req, res, next) => {
+router.delete(getOneByIdEndpoints, (req, res, next) => {
   let model = extractModelFromUrlRequest(req);
-  model.deleteOne({ _id: req.params.id }, dbRes => res.send(dbRes));
+  model.deleteOne({ _id: req.params.id }, 
+      dbRes => res.send(dbRes));
 });
 
 /* Utility function to extract model name from URL */
