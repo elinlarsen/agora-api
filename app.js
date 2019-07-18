@@ -28,8 +28,7 @@ app.use(cookieParser());
 //[process.env.SITE_APP]
 }));*/
 
-var allowedOrigins = ['http://localhost:3000',
-                      'http://agoraapp.com'];
+var allowedOrigins = [process.env.SITE_APP];
 app.use(cors({
   credentials: false,
   origin: function(origin, callback){// allow requests with no origin  (like mobile apps or curl requests)
