@@ -51,4 +51,7 @@ app.locals.title = "Agora";
 const index = require("./routes/index");
 app.use("/", index);
 
+const auth = require("./routes/auth");
+app.use("/", auth);
+
 module.exports = app;
