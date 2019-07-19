@@ -94,25 +94,11 @@ router.get(getOneByIdEndpoints, (req, res, next) => {
 
 /* POST routes */
 
-router.post(createEndpoints, parser.single("picture"), (req, res, next) => {
-  var objectToPass = req.body;
-  console.log(req.body);
-
-  if (req.body.projects) {
-    const projects = JSON.parse(req.body.projects);
-    objectToPass.projects = projects;
-  }
-  if (req.body.members) {
-    const members = JSON.parse(req.body.members);
-    objectToPass.members = members;
-  }
-
-  if (req.file) {
-    objectToPass.picture = [req.file.secure_url];
-  }
-
+router.post(createEndpoints,  parser.single('picture'),(req, res, next) => {
+  var objectToPass=req.body
+  if(req.file){objectToPass.picture=[req.file.secure_url]}
   let model = extractModelFromUrlRequest(req);
-  model.createOne(objectToPass, dbRes => res.send(dbRes));
+   model.createOne(objectToPass, dbRes => res.send(dbRes));
 });
 
 router.post(
@@ -126,9 +112,11 @@ router.post(
 
 /* PATCH routes */
 
-router.patch(getOneByIdEndpoints, (req, res, next) => {
+router.patch(getOneByIdEndpoints, parser.single('picture'), (req, res, next) => {
+  var objectToPass=req.body
+  if(req.file){objectToPass.picture=[req.file.secure_url]}
   let model = extractModelFromUrlRequest(req);
-  model.updateOne({ _id: req.params.id }, req.body, dbRes => res.send(dbRes));
+  model.updateOne({ _id: req.params.id }, objectToPass, dbRes => res.send(dbRes));
 });
 
 router.patch(getOneByIdEndpointsWithoutPicture, (req, res, next) => {
