@@ -13,6 +13,9 @@ const dbHandler = require("../dbHandler.js");
 const modelsHandlers = models.map(item => new dbHandler(item.model));
 const getCollectionEndpoints = models.map(model => "/" + model.name);
 const getOneByIdEndpoints = models.map(model => "/" + model.name + "/:id");
+const getOneByIdEndpointsWithoutPicture = models.map(
+  model => "/" + model.name + "/newwithoutpicture/:id"
+);
 const createEndpoints = models.map(model => "/" + model.name + "/new");
 const createEndpointsWithoutPicture = models.map(
   model => "/" + model.name + "/newwithoutpicture"
@@ -124,6 +127,11 @@ router.post(
 /* PATCH routes */
 
 router.patch(getOneByIdEndpoints, (req, res, next) => {
+  let model = extractModelFromUrlRequest(req);
+  model.updateOne({ _id: req.params.id }, req.body, dbRes => res.send(dbRes));
+});
+
+router.patch(getOneByIdEndpointsWithoutPicture, (req, res, next) => {
   let model = extractModelFromUrlRequest(req);
   model.updateOne({ _id: req.params.id }, req.body, dbRes => res.send(dbRes));
 });
