@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const parser=require("../config/cloudinary")
+const parser = require("../config/cloudinary");
 
 const models = [
   { name: "users", model: require("../models/User.js") },
@@ -14,6 +14,9 @@ const modelsHandlers = models.map(item => new dbHandler(item.model));
 const getCollectionEndpoints = models.map(model => "/" + model.name);
 const getOneByIdEndpoints = models.map(model => "/" + model.name + "/:id");
 const createEndpoints = models.map(model => "/" + model.name + "/new");
+const createEndpointsWithoutPicture = models.map(
+  model => "/" + model.name + "/newwithoutpicture"
+);
 const updateEndpoints = models.map(model => "/" + model.name + "/update/:id");
 const deleteEndpoints = models.map(model => "/" + model.name + "/delete/:id");
 
@@ -32,6 +35,7 @@ router.get("/", (req, res, next) => {
     getCollectionEndpoints,
     getOneByIdEndpoints,
     createEndpoints,
+    createEndpointsWithoutPicture
     //updateEndpoints,
     //deleteEndpoints
   ];
@@ -43,12 +47,16 @@ router.get("/", (req, res, next) => {
     'You can also choose to populate specific fields in a collection using /?expand = fields to populate (with expand repeated as many time as you need). For example, if you would like to populate the fields "likes" and "project" for the messages collection, just query /messages/?expand = likes & expand = project';
 
   ImportantNotesText3 =
-  ' Editing and deleting specific documents can be done through endpoints with ID'
+    " Editing and deleting specific documents can be done through endpoints with ID";
 
   data = {
     introduction: introductionText,
     endpoints: endpoints,
-    importantNotes: [ImportantNotesText1, ImportantNotesText2, ImportantNotesText3]
+    importantNotes: [
+      ImportantNotesText1,
+      ImportantNotesText2,
+      ImportantNotesText3
+    ]
   };
   res.send(data);
 });
@@ -90,6 +98,15 @@ router.post(createEndpoints,  parser.single('picture'),(req, res, next) => {
    model.createOne(objectToPass, dbRes => res.send(dbRes));
 });
 
+router.post(
+  createEndpointsWithoutPicture,
+
+  (req, res, next) => {
+    let model = extractModelFromUrlRequest(req);
+    model.createOne(req.body, dbRes => res.send(dbRes));
+  }
+);
+
 /* PATCH routes */
 
 router.patch(getOneByIdEndpoints, parser.single('picture'), (req, res, next) => {
@@ -103,8 +120,7 @@ router.patch(getOneByIdEndpoints, parser.single('picture'), (req, res, next) => 
 
 router.delete(getOneByIdEndpoints, (req, res, next) => {
   let model = extractModelFromUrlRequest(req);
-  model.deleteOne({ _id: req.params.id }, 
-      dbRes => res.send(dbRes));
+  model.deleteOne({ _id: req.params.id }, dbRes => res.send(dbRes));
 });
 
 /* Utility function to extract model name from URL */
