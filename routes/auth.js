@@ -12,7 +12,7 @@ const minPasswordLength = 8;
 // SIGN UP
 router.post("/signup", parser.single("picture"), (req, res, next) => {
 
-  const { first_name, last_name, username, password, email} = req.body;
+  const { first_name, last_name, username, email, password } = req.body;
   var errorMsg = null;
   const salt = bcrypt.genSaltSync(10);
   const hashPass = bcrypt.hashSync(password, salt);
@@ -41,6 +41,7 @@ router.post("/signup", parser.single("picture"), (req, res, next) => {
 
   userHandler
     .createOne(newUser, newUserFromDB => {
+        console.log( "while creating new user ---newUserFromDB  ",newUserFromDB )
         req.login(newUserFromDB, err => {
           console.log("Passport login error --------", err);
           if (err) {
@@ -52,35 +53,22 @@ router.post("/signup", parser.single("picture"), (req, res, next) => {
           else res.status(200).json(newUserFromDB)
         });
     })
-    /*
-    .catch(apiErr => {
-      const error = {
-        11000: "The email already exists in database"
-      };
-      const message = {
-        text: `Something went wrong saving user to Database : ${
-          error[apiErr.code]
-        }`,
-        status: "warning"
-      };
-
-      res.status(409).json({ message }); 
-      return;
-    });
-    */
-
 });
 
 
 // Log IN
+router.get("/login", (req, res) =>{
+  res.send(req.body)
+})
 
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/login",
-  failureFlash: true,
-  passReqToCallback: true
-}));
-/*
+/* router.post("/login", passport.authenticate("local", {successRedirect: "/agoras",
+                                                      failureRedirect: "/login",
+                                                      failureFlash: true,
+                                                      passReqToCallback: true}
+                                           )
+);
+*/
+
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, failureDetails) => {
     var errorMsg = null;
@@ -93,38 +81,30 @@ router.post("/login", (req, res, next) => {
         httpStatus: 520
       };
     }
-    if (!user)
+    if (!user){
+      console.log("user not found in db", failureDetails, "user ---", user, "error --", err);
       errorMsg = {
         message: "Sorry, we coudn't find this account",
         status: "warning",
         httpStatus: 404
       };
-
+    }
+     
     if (errorMsg) return res.status(errorMsg.httpStatus).json(errorMsg);
 
      // save user in session
     req.login(user, function(err) {
       if (err) {
+        console.log("error while saving user in session ----", err)
         res.status(500).json({ message: "Session save went bad." });
         return;
-      }
-      const { _id: id, first_name, last_name,username, email } = req.user;
-      next(
-        res.status(200).json({
-          loginStatus: true,
-          user: {
-            id,
-            first_name,
-            last_name,
-            username,
-            email,
-          }
-        })
-      );
+      }  
+      console.log("in req.login - auth server file -- req.user :  ", req.user)   
+      next(res.status(200).json(req.user));
     });
   })(req, res, next);
 });
-*/
+
 
 //SIGN OUT
 router.post("/signout", (req, res, next) => {
