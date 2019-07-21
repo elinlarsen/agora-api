@@ -7,6 +7,7 @@ const express = require("express");
 const logger = require("morgan");
 const path = require("path");
 const cors = require("cors");
+const session = require("express-session");
 
 const app_name = require("./package.json").name;
 const debug = require("debug")(
@@ -22,13 +23,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-/*app.use(cors({
-  credentials: true,
-  origin: ['http://localhost:3000'], // <== this will be the URL of our React app (it will be running on port 3000)
-//[process.env.SITE_APP]
-}));*/
 
 var allowedOrigins = [process.env.SITE_APP];
+/*app.use(cors({
+  credentials: true,
+  origin: allowedOrigins, 
+}));*/
+
+
 app.use(cors());
 // app.use(cors({
 //   credentials: false,
@@ -43,6 +45,19 @@ app.use(cors());
 //     */
 //   }));
 //}));
+
+//SESSION
+app.use(session({
+  secret: "our-passport-local-strategy-app",
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+// PASSPORT
+const passport = require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // default value for title local
