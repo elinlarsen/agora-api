@@ -33,7 +33,7 @@ class dbHandler {
         console.log(
           "Extracting a single document seems to be working. Result is " + dbRes
         );
-        if (clbk) clbk(dbRres);
+        if (clbk) clbk(dbRes);
       })
       .catch(err => console.log(err));
   }
@@ -63,7 +63,7 @@ class dbHandler {
         );
         if (clbk) clbk(dbRes);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log("error in getOneById -dbhandler- ", err));
   }
 
   getAll(clbk) {
