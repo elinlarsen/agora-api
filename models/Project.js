@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
   name: { type: String, required: true, unique: true },
-  picture: { type: String },
+  picture: { type: Array },
   members: [{ type: Schema.Types.ObjectId, ref: "userModel" }],
   tags: [
     {

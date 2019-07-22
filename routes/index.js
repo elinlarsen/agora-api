@@ -13,12 +13,13 @@ const dbHandler = require("../dbHandler.js");
 const modelsHandlers = models.map(item => new dbHandler(item.model));
 const getCollectionEndpoints = models.map(model => "/" + model.name);
 const getOneByIdEndpoints = models.map(model => "/" + model.name + "/:id");
+const getOneByIdEndpointsWithoutPicture = models.map(
+  model => "/" + model.name + "/newwithoutpicture/:id"
+);
 const createEndpoints = models.map(model => "/" + model.name + "/new");
 const createEndpointsWithoutPicture = models.map(
   model => "/" + model.name + "/newwithoutpicture"
 );
-const updateEndpoints = models.map(model => "/" + model.name + "/update/:id");
-const deleteEndpoints = models.map(model => "/" + model.name + "/delete/:id");
 
 /* GET routes */
 
@@ -36,8 +37,6 @@ router.get("/", (req, res, next) => {
     getOneByIdEndpoints,
     createEndpoints,
     createEndpointsWithoutPicture
-    //updateEndpoints,
-    //deleteEndpoints
   ];
 
   ImportantNotesText1 =
@@ -91,30 +90,31 @@ router.get(getOneByIdEndpoints, (req, res, next) => {
 
 /* POST routes */
 
-router.post(createEndpoints,  parser.single('picture'),(req, res, next) => {
-  var objectToPass=req.body
-  if(req.file){objectToPass.picture=[req.file.secure_url]}
-  let model = extractModelFromUrlRequest(req);
-   model.createOne(objectToPass, dbRes => res.send(dbRes));
-});
-
-router.post(
-  createEndpointsWithoutPicture,
-
-  (req, res, next) => {
-    let model = extractModelFromUrlRequest(req);
-    model.createOne(req.body, dbRes => res.send(dbRes));
+router.post(createEndpoints, parser.single("picture"), (req, res, next) => {
+  var objectToPass = req.body;
+  if (req.file) {
+    objectToPass.picture = [req.file.secure_url];
   }
-);
+  let model = extractModelFromUrlRequest(req);
+  model.createOne(objectToPass, dbRes => res.send(dbRes));
+});
 
 /* PATCH routes */
 
-router.patch(getOneByIdEndpoints, parser.single('picture'), (req, res, next) => {
-  var objectToPass=req.body
-  if(req.file){objectToPass.picture=[req.file.secure_url]}
-  let model = extractModelFromUrlRequest(req);
-  model.updateOne({ _id: req.params.id }, objectToPass, dbRes => res.send(dbRes));
-});
+router.patch(
+  getOneByIdEndpoints,
+  parser.single("picture"),
+  (req, res, next) => {
+    var objectToPass = req.body;
+    if (req.file) {
+      objectToPass.picture = [req.file.secure_url];
+    }
+    let model = extractModelFromUrlRequest(req);
+    model.updateOne({ _id: req.params.id }, objectToPass, dbRes =>
+      res.send(dbRes)
+    );
+  }
+);
 
 /* DELETE routes */
 
