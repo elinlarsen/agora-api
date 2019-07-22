@@ -26,14 +26,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-var allowedOrigins = [process.env.SITE_APP];
+/*var allowedOrigins = [process.env.SITE_APP];
 app.use(cors({
   credentials: true,
   origin: allowedOrigins, 
 }));
+*/
 
 
-//app.use(cors());
+app.use(cors());
 // app.use(cors({
 //   credentials: false,
 //   /*origin: function(origin, callback){// allow requests with no origin  (like mobile apps or curl requests)

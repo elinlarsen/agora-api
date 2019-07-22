@@ -8,7 +8,8 @@ const userHandler = new dbHandler(userModel);
 
 passport.serializeUser((loggedInUser, cb) => {
   console.log("in serializeUser passport function, loggedInUser : ", loggedInUser)
-  cb(null, loggedInUser.user._id);
+  if(loggedInUser.user!==undefined)cb(null, loggedInUser.user._id);
+  else cb(null, loggedInUser._id);
 });
 
 passport.deserializeUser((userIdFromSession, cb) => {
