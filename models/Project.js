@@ -5,6 +5,8 @@ const projectSchema = new Schema({
   name: { type: String, required: true, unique: true },
   picture: { type: Array },
   members: [{ type: Schema.Types.ObjectId, ref: "userModel" }],
+  admin: { type: Schema.Types.ObjectId, ref: "userModel" },
+
   tags: [
     {
       type: String,
