@@ -10,6 +10,7 @@ const agoraSchema=new Schema({
   zipcode: {type: String},
   members : [{type: Schema.Types.ObjectId , ref: "userModel"}],
   projects : [{type: Schema.Types.ObjectId , ref: "projectModel"}],
+  admin : {type: Schema.Types.ObjectId , ref: "userModel"},
 
 })
 
