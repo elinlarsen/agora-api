@@ -117,17 +117,13 @@ router.post("/signout", (req, res, next) => {
 router.get("/loggedin", (req, res, next) => {
   console.log("is loggedin ? ", req.isAuthenticated());
   if (req.isAuthenticated()) { // method provided by passport
-    const { _id: id, first_name, last_name, email, picture} = req.user;
+    //const { _id: id, first_name, last_name, email, picture} = req.user;
+    let userToFront=req.user;
+    delete userToFront.password;
     return res.status(200).json({
       loginStatus: true,
       message: "authorized",
-      user: {
-        id,
-        first_name,
-        last_name,
-        email,
-        picture
-      }
+      user: userToFront,
     });
   }
   res.status(403).json({ loginStatus: false, message: "Unauthorized" });
