@@ -26,7 +26,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-var allowedOrigins = [process.env.SITE_APP];
 var corsOptions ={
   credentials: true,
   origin:  [process.env.SITE_APP_LOCAL, process.env.SITE_APP_DEPLOYED], 

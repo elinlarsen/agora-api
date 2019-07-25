@@ -42,9 +42,9 @@ router.post("/signup", parser.single("picture"), (req, res, next) => {
   userHandler
     .createOne(newUser, newUserFromDB => {
         console.log( "while creating new user ---newUserFromDB  ",newUserFromDB )
-        req.login(newUserFromDB, err => {
-          console.log("Passport login error --------", err);
+        req.login(newUserFromDB, err => {       
           if (err) {
+            console.log("Passport login error --------", err);
             return res.status(500).json({
               message: "Something went wrong with automatic login after signup"
             });
